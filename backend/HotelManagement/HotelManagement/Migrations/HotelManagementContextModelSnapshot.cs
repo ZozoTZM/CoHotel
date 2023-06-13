@@ -42,7 +42,7 @@ namespace HotelManagement.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ThirdPartyId")
+                    b.Property<int?>("ThirdPartyId")
                         .HasColumnType("int");
 
                     b.HasKey("BookingId");
@@ -85,15 +85,22 @@ namespace HotelManagement.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -106,17 +113,11 @@ namespace HotelManagement.Migrations
 
             modelBuilder.Entity("HotelManagement.Models.Room", b =>
                 {
-                    b.Property<int>("RoomId")
+                    b.Property<int>("RoomNumber")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"));
-
-                    b.Property<int>("CurrOccupancy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxOccupancy")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomNumber"));
 
                     b.Property<int>("RoomStatus")
                         .HasColumnType("int");
@@ -124,7 +125,7 @@ namespace HotelManagement.Migrations
                     b.Property<int>("RoomType")
                         .HasColumnType("int");
 
-                    b.HasKey("RoomId");
+                    b.HasKey("RoomNumber");
 
                     b.ToTable("Rooms");
                 });
