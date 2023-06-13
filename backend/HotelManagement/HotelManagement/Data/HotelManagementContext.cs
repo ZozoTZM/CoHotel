@@ -12,11 +12,6 @@ namespace HotelManagement.Data
         public HotelManagementContext(DbContextOptions<HotelManagementContext> options) : base(options)
         {
 
-        }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Room>()
-                .HasKey(r => r.RoomId);
-        }
+        }      
     }
 }
