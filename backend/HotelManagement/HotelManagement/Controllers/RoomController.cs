@@ -21,45 +21,55 @@ namespace HotelManagement.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Room>>> GetAllRooms()
         {
-            var rooms = await _roomService.GetAllRooms();
+            var rooms = await _roomService.GetAllRoomsAsync();
             return Ok(rooms);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Room>> GetRoomById(int id)
+        [HttpGet("{roomNumber:int}")]
+        public async Task<ActionResult<Room>> GetRoomByNumber(int roomNumber)
         {
-            var room = await _roomService.GetRoomById(id);
+            var room = await _roomService.GetRoomByNumberAsync(roomNumber);
+
             if (room == null)
+            {
                 return NotFound();
+            }
 
             return Ok(room);
         }
 
         [HttpPost]
-        public async Task<Room> CreateRoom([FromBody] Room room)
+        public IActionResult CreateRoom([FromBody] Room room)
         {
-            return await _roomService.CreateRoom(room);        
+            var createdRoom = _roomService.CreateRoom(room);
+            return CreatedAtAction(nameof(GetRoomByNumber), new { roomNumber = createdRoom.RoomNumber }, createdRoom);
         }
 
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult<Room>> UpdateRoom(int id, [FromBody] Room room)
+        [HttpPut("{roomNumber:int}")]
+        public async Task<IActionResult> UpdateRoom(int roomNumber, [FromBody] Room room)
         {
-            if (id != room.RoomId)
-                return BadRequest();
+            var updated = await _roomService.UpdateRoomAsync(room);
 
-            var updatedRoom = await _roomService.UpdateRoom(room);
-            return Ok(updatedRoom);
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Room>> DeleteRoom(int id)
-        {
-            var deletedRoom = await _roomService.DeleteRoom(id);
-            if (deletedRoom == null)
+            if (!updated)
+            {
                 return NotFound();
+            }
 
-            return Ok(deletedRoom);
+            return NoContent();
+        }
+
+        [HttpDelete("{roomNumber:int}")]
+        public async Task<IActionResult> DeleteRoom(int roomNumber)
+        {
+            var deleted = await _roomService.DeleteRoomAsync(roomNumber);
+
+            if (!deleted)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }
+
