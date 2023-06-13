@@ -1,0 +1,102 @@
+body {
+    background-color: #456789; /* Adjust the color as desired */
+    margin: 0;
+  }
+  
+  .landing-page-container {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 1fr) minmax(0, 1fr) 1fr;
+    height: 100vh;
+  }
+  
+  .empty-column {
+    grid-column: 1 / 2;
+  }
+  .last-column{
+    grid-column: 4 / 5;
+  }
+  
+  .login-column {
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 1rem; /* Adjust the right padding as desired */
+  }
+  
+  .info-column {
+    grid-column: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1rem; /* Adjust the left padding as desired */
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #ccc; /* Adjust the border color as desired */
+    border-radius: 10px; /* Adjust the border radius as desired */
+    padding: 1rem;
+    background-color: #f0f0f0; /* Adjust the background color as desired */
+    width: 100%; /* Adjust the width as desired */
+    max-width: 400px; /* Adjust the max width as desired */
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .logo-text {
+    font-size: 1.2rem; /* Adjust the font size as needed */
+    color: white; /* Adjust the color as desired */
+  }
+  
+  .sample-text {
+    color: white; /* Adjust the color as desired */
+    max-width: 400px; /* Adjust the max width as desired */
+  }
+  
+  .login-form-container {
+    width: 100%; /* Adjust the width as desired */
+    background-color: silver; /* Adjust the background color as desired */
+    border-radius: 10px; /* Adjust the border radius as desired */
+    padding: 1rem; /* Adjust the padding as desired */
+  }
+  
+  .login-input-parent {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+  }
+  
+  label {
+    margin-bottom: 0.25rem;
+    color: black; /* Adjust the color as desired */
+    text-align: center;
+  }
+  
+  input[type='userName'],
+  input[type='password'],
+  .login-button {
+    padding: 0.5rem;
+    font-size: 1rem; /* Adjust the font size as needed */
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box; /* Ensure the padding is included in the width calculation */
+  }
+  
+  .login-button {
+    margin-top: 1rem;
+  }
+  
+  @media (max-width: 600px) {
+    .login-container {
+      max-width: 100%;
+    }
+  }
+  
