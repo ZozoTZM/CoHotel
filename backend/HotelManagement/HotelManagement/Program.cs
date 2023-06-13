@@ -1,5 +1,6 @@
 using HotelManagement.Data;
 using HotelManagement.Services;
+using HotelManagement.Services.Room;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
