@@ -1,6 +1,5 @@
 using HotelManagement.Data;
 using HotelManagement.Services;
-using HotelManagement.Services.Room;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +16,7 @@ builder.Services.AddDbContext<HotelManagementContext>(options =>
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IBookingDetailService, BookingDetailService>();
 
 
 
