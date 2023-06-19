@@ -1,7 +1,7 @@
 import './LandingPage.css';
 import React,{useState} from "react";
 
-const LandingPage = (handleLogin) => {
+const LandingPage = ({handleLogin}) => {
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
 
@@ -32,7 +32,7 @@ const LandingPage = (handleLogin) => {
       <div className="empty-column"></div>
       <div className="login-column">
       <form onSubmit={handleSubmit} className="login-form-container">
-            <h2>Login to your account</h2>
+            {/* <h2>Login to your account</h2>
 
             <div className="login-input-parent">
                 <label htmlFor="username">Username</label>
@@ -52,7 +52,7 @@ const LandingPage = (handleLogin) => {
                     onChange={(event) => setPassword(event.target.value)}
                     required
                 />
-            </div>
+            </div> */}
 
             <button className="login-button" type="submit">Login</button>
         </form>
