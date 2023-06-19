@@ -10,7 +10,10 @@ const Dashboard = () => {
   
   const handleDateChange = (event) => {
     const selectedDate = new Date(event.target.value);
+
+    if (!isNaN(selectedDate)) {
     setStartDate(selectedDate);
+  }
   };
   const handleCellClick = (date, roomNumber) => {
     setSelectedCell({ date, roomNumber });
