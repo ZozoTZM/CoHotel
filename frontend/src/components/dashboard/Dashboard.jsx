@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import RoomDetail  from '../RoomDetail/RoomDetail';
 import './Dashboard.css';
+
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(new Date()); 
   const [selectedCell, setSelectedCell] = useState(null);
-
+  const [refreshCount, setRefreshCount] = useState(0);
   
   const handleDateChange = (event) => {
     const selectedDate = new Date(event.target.value);
@@ -82,7 +82,7 @@ const Dashboard = () => {
       emptyCells.push(
         <td
           key={i}
-          className="empty-cell"
+          className="cell"
           onClick={() => handleCellClick(formattedDate, roomNumber)}
         ></td>
       );
@@ -90,11 +90,31 @@ const Dashboard = () => {
 
     return emptyCells;
   };
+  const handleRefresh = () => {
+    setRefreshCount(refreshCount + 1);
+  };
+  
+  const renderHeaderCell = () => {
+    return (
+        <th className="header-cell">
+        <div className="top-left-content">
+          <button className="refresh-button" onClick={handleRefresh}>
+            Refresh
+          </button>
+        </div>
+      </th>
+    );
+  };
+
+  useEffect(() => {
+    console.log("Refresh");
+  }, [refreshCount]);
+
 
   return (
     <div className="dashboard">
       <div className="date-picker-container">
-      <div className="date-navigation">
+        <div className="date-navigation">
       <button className="arrow-button" onClick={handlePreviousWeek}>
             &lt;
           </button>
@@ -117,7 +137,7 @@ const Dashboard = () => {
         <table className="table">
           <thead>
             <tr>
-              <th></th> 
+                {renderHeaderCell()}
               {renderDates()}
             </tr>
           </thead>
