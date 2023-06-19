@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RoomDetail  from '../RoomDetail/RoomDetail';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const [startDate, setStartDate] = useState(new Date()); 
-  const navigate = useNavigate();
+  const [selectedCell, setSelectedCell] = useState(null);
 
   
   const handleDateChange = (event) => {
     const selectedDate = new Date(event.target.value);
     setStartDate(selectedDate);
   };
-
+  const handleCellClick = (date, roomNumber) => {
+    setSelectedCell({ date, roomNumber });
+  };
+  const handleCloseRoomDetail = () => {
+    setSelectedCell(null);
+  };
   const handlePreviousWeek = () => {
     const previousWeek = new Date(startDate);
     previousWeek.setDate(previousWeek.getDate() - 7);
@@ -72,13 +78,13 @@ const Dashboard = () => {
         month: 'short',
         day: 'numeric',
       });
-
-      const handleCellClick = () => {
-        navigate(`/room-detail/${formattedDate}/${roomNumber}`);
-      };
-
+     
       emptyCells.push(
-        <td key={i} className="empty-cell" onClick={handleCellClick}></td>
+        <td
+          key={i}
+          className="empty-cell"
+          onClick={() => handleCellClick(formattedDate, roomNumber)}
+        ></td>
       );
     }
 
@@ -88,6 +94,11 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="date-picker-container">
+      <div className="date-navigation">
+      <button className="arrow-button" onClick={handlePreviousWeek}>
+            &lt;
+          </button>
+          </div>
         <input
           type="date"
           className="date-picker"
@@ -95,9 +106,7 @@ const Dashboard = () => {
           onChange={handleDateChange}
         />
         <div className="date-navigation">
-          <button className="arrow-button" onClick={handlePreviousWeek}>
-            &lt;
-          </button>
+          
           <button className="arrow-button" onClick={handleNextWeek}>
             &gt;
           </button>
@@ -115,6 +124,13 @@ const Dashboard = () => {
           <tbody>{renderRooms()}</tbody>
         </table>
       </div>
+      {selectedCell && (
+        <RoomDetail
+          date={selectedCell.date}
+          roomNumber={selectedCell.roomNumber}
+          onClose={handleCloseRoomDetail}
+        />
+      )}
     </div>
   );
 };
