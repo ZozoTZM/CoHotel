@@ -52,41 +52,37 @@ namespace HotelManagement.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Booking>> CreateBooking(
-        [FromBody] Customer customer,
-        [FromBody] DateTime bookingStart,
-        [FromBody] DateTime bookingEnd,
-        [FromBody] int? thirdPartyId,
-        [FromBody] List<int> roomNumbers)
+        [FromBody] BookingRequest bookingRequest)
         {
             // Check if the customer already exists
-            var existingCustomer = await _customerService.GetCustomerByIdAsync(customer.CustomerId);
+            var existingCustomer = await _customerService.GetCustomerByIdAsync(bookingRequest.Customer.CustomerId);
             if (existingCustomer == null)
             {               
-                _customerService.CreateCustomer(customer);
+                _customerService.CreateCustomer(bookingRequest.Customer);
             }
             else
             {
                 // Customer already exists, update the customer object
-                existingCustomer.FirstName = customer.FirstName;
-                existingCustomer.LastName = customer.LastName;
-                existingCustomer.Email = customer.Email;
-                existingCustomer.Phone = customer.Phone;
-                existingCustomer.Address = customer.Address;
+                existingCustomer.FirstName = bookingRequest.Customer.FirstName;
+                existingCustomer.LastName = bookingRequest.Customer.LastName;
+                existingCustomer.Email = bookingRequest.Customer.Email;
+                existingCustomer.Phone = bookingRequest.Customer.Phone;
+                existingCustomer.Address = bookingRequest.Customer.Address;
                 await _customerService.UpdateCustomerAsync(existingCustomer);
             }
 
             var booking = new Booking
             {
                 BookingPlaced = DateTime.Now,
-                BookingStart = bookingStart,
-                BookingEnd = bookingEnd,
-                ThirdPartyId = thirdPartyId,
-                CustomerId = customer.CustomerId,
-                Customer = customer
+                BookingStart = bookingRequest.BookingStart,
+                BookingEnd = bookingRequest.BookingEnd,
+                ThirdPartyId = bookingRequest.ThirdPartyId,
+                CustomerId = bookingRequest.Customer.CustomerId,
+                Customer = bookingRequest.Customer
             };
             // Create booking details
             var bookingDetails = new List<BookingDetail>();
-            foreach (var roomNumber in roomNumbers)
+            foreach (var roomNumber in bookingRequest.RoomNumbers)
             {
                 var room = await _roomService.GetRoomByNumberAsync(roomNumber);
                 if (room == null)
