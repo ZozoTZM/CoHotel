@@ -39,7 +39,7 @@ namespace HotelManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateRoom([FromBody] Room room)
+        public IActionResult CreateRoom(Room room)
         {
             var createdRoom = _roomService.CreateRoom(room);
             return CreatedAtAction(nameof(GetRoomByNumber), new { roomNumber = createdRoom.RoomNumber }, createdRoom);
