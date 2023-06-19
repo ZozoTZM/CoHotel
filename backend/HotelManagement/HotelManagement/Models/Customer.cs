@@ -25,7 +25,6 @@ namespace HotelManagement.Models
         [Required]
         [StringLength(100)]
         public string? Address { get; set; }
-
-        public ICollection<Booking> Bookings { get; set; } = null!;
+       
     }
 }
