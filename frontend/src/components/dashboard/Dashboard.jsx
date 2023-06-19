@@ -35,16 +35,24 @@ const Dashboard = () => {
     const currentDate = new Date(startDate);
 
     for (let i = 0; i < 7; i++) {
-      const formattedDate = currentDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-      });
-      dates.push(
-        <th key={i} className="date-cell">
-          {formattedDate}
-        </th>
-      );
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1; 
+        const day = currentDate.getDate();
+        const dayOfWeek = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+
+        const formattedDate = `${month < 10 ? '0' : ''}${month}.${day}`;
+        
+          dates.push(
+            <th key={i} className="date-cell">
+              <div className="date-content">
+                <span className="year">{year}</span>
+                
+                <span className="month-day">{formattedDate}</span>
+                
+                <span className="day-of-week">{dayOfWeek}</span>
+              </div>
+            </th>
+          );
 
       currentDate.setDate(currentDate.getDate() + 1); 
     }
