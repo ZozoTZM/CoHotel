@@ -2,6 +2,17 @@ import React from 'react';
 import './RoomDetail.css';
 
 const RoomDetail = ({ date, roomNumber, onClose }) => {
+
+    const fetchData = async () => {
+        const response = await fetch('http://localhost:5000/rooms');
+        const data = await response.json();
+        console.log(data);
+    
+    }
+
+
+
+
   return (
     <div className="room-detail-overlay">
       <div className="room-detail-container">
