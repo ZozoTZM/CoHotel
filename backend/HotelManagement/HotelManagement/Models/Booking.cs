@@ -7,7 +7,7 @@ namespace HotelManagement.Models
         public int BookingId { get; set; }
 
         [Required]
-        public DateTime BookingPlaced { get; set; }
+        public DateTime PlacedDate { get; set; }
 
         [Required]
         public DateTime BookingStart { get; set; }
@@ -16,10 +16,8 @@ namespace HotelManagement.Models
         public DateTime BookingEnd { get; set; }
 
         public int? ThirdPartyId { get; set; }
-
-        public int CustomerId { get; set; }
-        public Customer Customer { get; set; } = null!;
-
-        public ICollection<BookingDetail> BookingDetails { get; set; } = null!;
+        public int CustomerId { get; set; } 
+        public Customer Customer { get; set; }
+        public ICollection<BookingRoom> BookingRooms { get; set; }
     }
 }
