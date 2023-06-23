@@ -7,6 +7,26 @@ const Dashboard = () => {
   const [startDate, setStartDate] = useState(new Date()); 
   const [selectedCell, setSelectedCell] = useState(null);
   const [refreshCount, setRefreshCount] = useState(0);
+  const [existingRooms, setExistingRooms] = useState([]);
+
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await fetch('https://localhost:7082/rooms');
+        if (response.ok) {
+          const rooms = await response.json();
+          setExistingRooms(rooms);
+        } else {
+          console.error('Failed to fetch rooms:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching rooms:', error);
+      }
+    };
+
+    fetchRooms();
+  }, []);
   
   const handleDateChange = (event) => {
     const selectedDate = new Date(event.target.value);
@@ -64,18 +84,18 @@ const Dashboard = () => {
   };
 
   const renderRooms = () => {
-    const rooms = [];
-
-    for (let i = 101; i <= 120; i++) {
-      rooms.push(
-        <tr key={i}>
-          <td className="room-cell">{i}</td>
-          {renderEmptyCells(i)}
-        </tr>
-      );
+    if (existingRooms.length === 0) {
+      return null; 
     }
-
-    return rooms;
+  
+    return existingRooms.map((room) => (
+      
+      <tr key={room.roomNumber}>
+        <td className="room-cell">{room.roomNumber}</td>
+        {renderEmptyCells(room.roomNumber)}
+        {console.log(room.roomNumber)}
+      </tr>
+    ));
   };
 
   const renderEmptyCells = (roomNumber) => {
@@ -92,7 +112,7 @@ const Dashboard = () => {
      
       emptyCells.push(
         <td
-          key={i}
+          key={`${roomNumber}-${i}`}
           className="cell"
           onClick={() => handleCellClick(formattedDate, roomNumber)}
         ></td>
