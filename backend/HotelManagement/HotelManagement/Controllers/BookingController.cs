@@ -54,7 +54,7 @@ namespace HotelManagement.Controllers
         public async Task<ActionResult<Booking>> CreateBooking(
         [FromBody] BookingRequest bookingRequest)
         {
-            // Check if the customer already exists
+            
             var existingCustomer = await _customerService.GetCustomerByIdAsync(bookingRequest.Customer.CustomerId);
             if (existingCustomer == null)
             {               
@@ -78,7 +78,7 @@ namespace HotelManagement.Controllers
                 BookingEnd = bookingRequest.BookingEnd,
                 ThirdPartyId = bookingRequest.ThirdPartyId,
                 CustomerId = bookingRequest.Customer.CustomerId,
-                Customer = bookingRequest.Customer
+                
             };
             // Create booking details
             var bookingDetails = new List<BookingDetail>();
