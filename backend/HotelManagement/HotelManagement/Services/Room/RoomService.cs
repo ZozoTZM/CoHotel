@@ -27,6 +27,14 @@ namespace HotelManagement.Services
             return await _context.Rooms.FindAsync(roomNumber);
         }
 
+        public async Task<List<Room>> GetRoomsByNumbersAsync(List<int> roomNumbers)
+        {
+            var rooms = await _context.Rooms
+                .Where(room => roomNumbers.Contains(room.Identifier))
+                .ToListAsync();
+
+            return rooms;
+        }
         public Room CreateRoom(Room room)
         {
             _context.Rooms.Add(room);
