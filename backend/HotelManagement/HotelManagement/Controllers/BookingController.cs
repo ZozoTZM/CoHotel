@@ -4,6 +4,8 @@ using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HotelManagement.DTOs;
+using AutoMapper;
 
 namespace HotelManagement.Controllers
 {
@@ -13,17 +15,23 @@ namespace HotelManagement.Controllers
     {
         private readonly IBookingService _bookingService;
         private readonly ICustomerService _customerService;
-        private readonly IBookingDetailService _bookingDetailService;
         private readonly IRoomService _roomService;
+        private readonly IMapper _mapper;
 
-        public BookingController(IBookingService bookingService, ICustomerService customerService, IBookingDetailService bookingDetailService, IRoomService roomService)
+        public class CreateBookingRequest
+        {
+            public CustomerDTO Customer { get; set; }
+            public BookingDTO Booking { get; set; }
+        }
+
+        public BookingController(IBookingService bookingService, ICustomerService customerService, IRoomService roomService, IMapper mapper)
         {
             _bookingService = bookingService;
             _customerService = customerService;
-            _bookingDetailService = bookingDetailService;
             _roomService = roomService;
+            _mapper = mapper;
         }
-
+        
         [HttpGet]
         public async Task<ActionResult<List<Booking>>> GetAllBookings()
         {
@@ -51,59 +59,15 @@ namespace HotelManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Booking>> CreateBooking(
-        [FromBody] BookingRequest bookingRequest)
+        public ActionResult<Booking> CreateBooking([FromBody] CreateBookingRequest request)
         {
+            var customer = _mapper.Map<Customer>(request.Customer);
+            var booking = _mapper.Map<Booking>(request.Booking);
             
-            var existingCustomer = await _customerService.GetCustomerByIdAsync(bookingRequest.Customer.CustomerId);
-            if (existingCustomer == null)
-            {               
-                _customerService.CreateCustomer(bookingRequest.Customer);
-            }
-            else
-            {
-                // Customer already exists, update the customer object
-                existingCustomer.FirstName = bookingRequest.Customer.FirstName;
-                existingCustomer.LastName = bookingRequest.Customer.LastName;
-                existingCustomer.Email = bookingRequest.Customer.Email;
-                existingCustomer.Phone = bookingRequest.Customer.Phone;
-                existingCustomer.Address = bookingRequest.Customer.Address;
-                await _customerService.UpdateCustomerAsync(existingCustomer);
-            }
+            _customerService.CreateCustomer(customer);
+            _bookingService.CreateBooking(booking);
 
-            var booking = new Booking
-            {
-                BookingPlaced = DateTime.Now,
-                BookingStart = bookingRequest.BookingStart,
-                BookingEnd = bookingRequest.BookingEnd,
-                ThirdPartyId = bookingRequest.ThirdPartyId,
-                CustomerId = bookingRequest.Customer.CustomerId,
-                
-            };
-            // Create booking details
-            var bookingDetails = new List<BookingDetail>();
-            foreach (var roomNumber in bookingRequest.RoomNumbers)
-            {
-                var room = await _roomService.GetRoomByNumberAsync(roomNumber);
-                if (room == null)
-                {
-                    return BadRequest($"Room with ID {roomNumber} not found");
-                }
-
-                var bookingDetail = new BookingDetail
-                {
-                    Booking = booking,
-                    Room = room
-                };
-
-                bookingDetails.Add(bookingDetail);
-            }
-            booking.BookingDetails = bookingDetails;
-
-            var createdBooking = _bookingService.CreateBooking(booking);
-
-            return CreatedAtAction(nameof(GetBookingById), new { id = createdBooking.BookingId }, createdBooking);
-
+            return Ok(booking);
         }
 
         [HttpDelete("{id}")]
