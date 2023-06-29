@@ -8,7 +8,7 @@ namespace HotelManagement.Models
     public class Room
     {
         public int RoomId { get; set; }
-        public string Identifier { get; set; }
+        public int Identifier { get; set; }
         public RoomType RoomType { get; set; }
 
         [NotMapped] 
@@ -36,8 +36,7 @@ namespace HotelManagement.Models
         public RoomStatus RoomStatus { get; set; }
         public int HotelId { get; set; }
         public Hotel Hotel { get; set; }
-
-        public ICollection<Booking> Bookings { get; set; }
+       
     }
 
 }
