@@ -1,4 +1,6 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
+using Azure.Core;
+using HotelManagement.DTOs;
 using HotelManagement.Models;
 using HotelManagement.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,11 @@ namespace HotelManagement.Controllers
     public class RoomController : ControllerBase
     {
         private readonly IRoomService _roomService;
-
-        public RoomController(IRoomService roomService)
+        private readonly IMapper _mapper;
+        public RoomController(IRoomService roomService, IMapper mapper)
         {
             _roomService = roomService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -38,11 +41,12 @@ namespace HotelManagement.Controllers
             return Ok(room);
         }
 
-        [HttpPost]
-        public IActionResult CreateRoom(Room room)
+        [HttpPost] 
+        public IActionResult CreateRoom(RoomDTO roomDTO)
         {
-            var createdRoom = _roomService.CreateRoom(room);
-            return CreatedAtAction(nameof(GetRoomByNumber), new { roomNumber = createdRoom.RoomNumber }, createdRoom);
+            var room = _mapper.Map<Room>(roomDTO);
+            _roomService.CreateRoom(room);
+            return Ok(room);
         }
 
         [HttpPut("{roomNumber:int}")]
