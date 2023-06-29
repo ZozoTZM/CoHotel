@@ -18,6 +18,6 @@ namespace HotelManagement.Models
         public int? ThirdPartyId { get; set; }
         public int CustomerId { get; set; } 
         public Customer Customer { get; set; }
-        public ICollection<BookingRoom> BookingRooms { get; set; }
+        public List<Room> Rooms { get; set; }
     }
 }
