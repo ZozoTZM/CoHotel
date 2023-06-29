@@ -3,8 +3,7 @@
     public class Hotel
     {
         public int HotelId { get; set; }
-        public string Name { get; set; }
-        // Other hotel properties
+        public string Name { get; set; }       
 
         public ICollection<Room> Rooms { get; set; }
     }
