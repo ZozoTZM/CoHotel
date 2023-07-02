@@ -65,6 +65,7 @@ namespace HotelManagement.Controllers
             var booking = _mapper.Map<Booking>(request.Booking);
             
             _customerService.CreateCustomer(customer);
+            booking.Customer= customer;
             _bookingService.CreateBooking(booking);
 
             return Ok(booking);
