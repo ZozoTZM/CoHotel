@@ -10,8 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,18 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<HotelManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<HotelManagementContext>()
-    .AddDefaultTokenProviders();
-
 
 var mapperConfig = new MapperConfiguration(cfg =>
 {
@@ -65,7 +54,6 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 
